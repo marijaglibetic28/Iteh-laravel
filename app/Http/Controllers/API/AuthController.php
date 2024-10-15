@@ -59,9 +59,9 @@ class AuthController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-       
-       
-  
+
+
+
         $user = User::where('email', $request->input('email'))->firstOrFail();
         if ($user->role != 'admin') {
             DB::statement("UPDATE users SET role='loggedIn' WHERE id=$user->id");
@@ -89,21 +89,21 @@ class AuthController extends Controller
             'email' => 'required|email', // Dodata je validacija da mora biti validan email
             'password' => 'required|string|min:4|confirmed' // Dodato je confirmed pravilo za potvrdu lozinke
         ]);
-    
+
         // Pronalaženje korisnika na osnovu emaila
         $user = User::where('email', $request->email)->firstOrFail();
-    
+
         // Promena lozinke
         $user->password = Hash::make($request->password);
         $user->save();
-    
+
         // Odgovor u JSON formatu
         return response()->json([
             'message' => 'Lozinka je uspešno resetovana.',
             'user' => $user
         ]);
     }
-    
+
     public function logout(Request $request)
     {
         $user = $request->user();
